@@ -6,7 +6,7 @@
 /*   By: moco <kofujita@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 13:52:20 by moco              #+#    #+#             */
-/*   Updated: 2024/11/02 15:07:39 by moco             ###   ########.fr       */
+/*   Updated: 2024/11/06 00:52:37 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,25 +95,80 @@ t_philo_code	t_philo_params_init(
 /******************************************************************************
  * 
  * 哲学者個人の状態
- * 1. uint32_t       wait_time -> 待機時間
- * 2. t_philo_status status    -> ステータス
+ * 1. uint32_t       my_number   -> 哲学者の個人番号
+ * 2. uint32_t       wait_time   -> 待機時間
+ * 3. t_philo_status status      -> ステータス
+ * 4. uint8_t        fork_status -> フォークを持っているかどうか
+ *  => (0 => フォークなし / 1 => フォークあり)
  *
  *****************************************************************************/
 typedef struct s_philo_member
 {
+	uint32_t		my_number;
 	uint32_t		wait_time;
 	t_philo_status	status;
+	uint8_t			fork;
 
-}	t_philo_status;
+}	t_philo_member;
+
+/**
+ * 哲学者個人の状態を引数で設定するための関数
+ *
+ * 1. t_philo_member *const -> 情報を代入するための構造体
+ * 2. const uint32_t        -> 哲学者の個人番号
+ * 3. const uint32_t        -> 待機時間 
+ * 4. const t_philo_status  -> ステータス
+ */
+void			t_philo_member_set(
+					t_philo_member *const thiz,
+					const uint32_t my_number,
+					const uint32_t wait_time,
+					const t_philo_status status);
+
+/******************************************************************************
+ * 
+ * 哲学者全体の状態
+ * 1. t_philo_member *data -> メンバの配列情報
+ * 2. size_t         size  -> メンバの数 
+ *
+ *****************************************************************************/
+typedef struct s_philo_members
+{
+	t_philo_member	*data;
+	size_t			size;
+
+}	t_philo_members;
+
+/**
+ * 哲学者全体の構造体の初期化を行うための関数
+ *
+ * 1. const size_t -> メンバの数
+ *
+ * r. t_philo_members -> [!NULL => 初期化成功]
+ *                       [NULL  => 初期化失敗]
+ */
+t_philo_members	*t_philo_members_init(
+					const size_t size);
+
+/**
+ * 哲学者全体の構造体の解放を行うための関数
+ *
+ * 1. t_philo_members *const -> 解放したい構造体
+ */
+void			t_philo_members_free(
+					t_philo_members *const thiz);
 
 /******************************************************************************
  * 
  * プロジェクト全体のメンバ構造体
+ * 1. プログラムを実行した際の引数情報
+ * 2. 哲学者情報
  *
  *****************************************************************************/
 typedef struct s_philo_info
 {
 	t_philo_params	parms;
+	t_philo_members	*members;
 
 }	t_philo_info;
 
