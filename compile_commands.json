@@ -1,0 +1,21 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/cc",
+      "-Werror",
+      "-Wall",
+      "-Wextra",
+      "-ggdb",
+      "-fsanitize=leak",
+      "-I./libphilo",
+      "-I./include",
+      "-c",
+      "-o",
+      "objs/libphilo/public/t_philo_memgers/init.o",
+      "libphilo/public/t_philo_memgers/init.c"
+    ],
+    "directory": "/home/moco/Documents/42tokyo/philo",
+    "file": "/home/moco/Documents/42tokyo/philo/libphilo/public/t_philo_memgers/init.c",
+    "output": "/home/moco/Documents/42tokyo/philo/objs/libphilo/public/t_philo_memgers/init.o"
+  }
+]
