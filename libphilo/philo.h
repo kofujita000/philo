@@ -6,7 +6,7 @@
 /*   By: moco <kofujita@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 13:52:20 by moco              #+#    #+#             */
-/*   Updated: 2024/11/07 23:23:37 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/11/17 10:58:12 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef enum s_philo_fork
 /******************************************************************************
  *
  * メンバ情報が現在処理中であるかどうかのフラグ
- * 1. PHILO_LOCK_TRUE -> 処理中 (触れては行けない)
+ * 1. PHILO_LOCK_TRUE  -> 処理中 (触れては行けない)
  * 2. PHILO_LOCK_FALSE -> 未処理 (触れて良い)
  *
  *****************************************************************************/
@@ -271,11 +271,22 @@ void					t_philo_sequential_free(
 							t_philo_sequential *const thiz);
 
 /**
+ * 順番情報のカレントを取得するための関数
+ *
+ * 1. t_philo_sequential *const -> 情報を保持する構造体
+ *
+ * r. const t_philo_list * -> カレントリスト情報
+ */
+const t_philo_list		*t_philo_sequential_current(
+							t_philo_sequential *const thiz);
+
+/**
  * 順番情報を一つ先に進めるための関数
  *
  * 1. t_philo_sequential *const -> 情報を保持する構造体
  *
  * r. const t_philo_list * -> 移動後リスト情報
+ *  > (NULL の場合は末尾にいることを表す)
  */
 const t_philo_list		*t_philo_sequential_next(
 							t_philo_sequential *const thiz);
@@ -295,6 +306,25 @@ void					t_philo_sequential_move_end(
  * 1. t_philo_sequential *const -> 情報を保持する構造体
  */
 void					t_philo_sequential_erase(
+							t_philo_sequential *const thiz);
+
+/**
+ * カレント情報を先頭に移動させるための関数
+ *
+ * 1. t_philo_sequential *const -> 情報を保持する構造体
+ */
+void					t_philo_sequential_move_current_to_begin(
+							t_philo_sequential *const thiz);
+
+/**
+ * カレントが末尾かどうかを確かめるための関数
+ *
+ * 1. t_philo_sequential *const -> 情報を保持する構造体
+ *
+ * r. int -> [0 => 末尾ではない]
+ *           [1 => 末尾である]
+ */
+int						t_philo_sequential_is_end(
 							t_philo_sequential *const thiz);
 
 /******************************************************************************
