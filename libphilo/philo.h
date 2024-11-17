@@ -6,7 +6,7 @@
 /*   By: moco <kofujita@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 13:52:20 by moco              #+#    #+#             */
-/*   Updated: 2024/11/17 10:58:12 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/11/17 11:48:19 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
  * 8. PHILO_ERROR_MEMTER_MUTEX_INIT          -> ミューテックスの初期化に失敗
  * 9. PHILO_ERROR_MEMBER_MUTEX_LOCK          -> ミューテックスのロックに失敗
  * 10. PHILO_ERROR_MEMBER_PTHREAD_CREATE     -> スレッドの作成に失敗
+ * 11. PHILO_ERROR_INIT_INFO                 -> t_philo_info の初期化に失敗
  *
  *****************************************************************************/
 typedef enum s_philo_code
@@ -48,6 +49,7 @@ typedef enum s_philo_code
 	PHILO_ERROR_MEMBER_MUTEX_INIT,
 	PHILO_ERROR_MEMBER_MUTEX_LOCK,
 	PHILO_ERROR_MEMBER_PTHREAD_CREATE,
+	PHILO_ERROR_INIT_INFO,
 
 }	t_philo_code;
 
@@ -332,7 +334,10 @@ int						t_philo_sequential_is_end(
  * プロジェクト全体のメンバ構造体
  * 1. プログラムを実行した際の引数情報
  * 2. 哲学者情報
- * 3. 構造体のミューテックス
+ * 3. 哲学者の順番情報
+ * 4. 占有ロック制御のためのミューテックス
+ * 5. 共有ロック制御のためのフラグ
+ * 6. 死者の観測を行うためのスレッド (死者にクチナシ)
  *
  *****************************************************************************/
 typedef struct s_philo_info
@@ -340,7 +345,9 @@ typedef struct s_philo_info
 	t_philo_params		parms;
 	t_philo_members		*members;
 	t_philo_sequential	*sequential;
-	pthread_mutex_t		*mtx;
+	pthread_mutex_t		mtx;
+	t_philo_lock		lock;
+	pthread_t			die_ovserver_ptid;
 
 }	t_philo_info;
 
@@ -352,7 +359,7 @@ typedef struct s_philo_info
  */
 t_philo_info			*t_philo_info_init(
 							const int argc,
-							const char *const argv);
+							const char **const argv);
 
 /**
  * プロジェクト全体の構造体を解放するための関数
@@ -372,15 +379,26 @@ void					t_philo_info_free(
  * r. t_philo_code -> [PHILO_SUCCESS => 処理成功]
  *                    [...]
  */
-t_philo_code		philo_run(
-						t_philo_info *const info);
+t_philo_code			philo_run(
+							t_philo_info *const info);
 
 /**
  * スレッドが実行する関数
  *
  * 1. t_philo_member *const -> スレッドに渡したい情報を保持する構造体
  */
-void				*__philo_thread_process(
-						t_philo_member *const member);
+void					*__philo_thread_process(
+							t_philo_member *const member);
+
+/**
+ * 死者を監視するための関数
+ *
+ * 1. t_philo_info *const -> 情報を保持する構造体
+ *
+ * r. t_philo_code -> [PHILO_SUCCESS => 処理成功]
+ *                    [...]
+ */
+t_philo_code			__philo_run_die_ovserver(
+							t_philo_info *const info);
 
 #endif // PHILO_H
