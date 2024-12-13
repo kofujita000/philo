@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 11:13:42 by kofujita          #+#    #+#             */
-/*   Updated: 2024/11/17 11:16:51 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/14 01:17:14 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ void	t_philo_info_free(
 {
 	if (!thiz)
 		return ;
+	thiz->die_ovserver_flag = 0;
+	pthread_join(thiz->die_ovserver_ptid, NULL);
 	pthread_mutex_destroy(&thiz->mtx);
 	(void)(thiz->members && (t_philo_members_free(thiz->members), 0));
 	(void)(thiz->sequential && (t_philo_sequential_free(thiz->sequential), 0));

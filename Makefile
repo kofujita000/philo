@@ -6,7 +6,7 @@
 #    By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/07 18:28:46 by kofujita          #+#    #+#              #
-#    Updated: 2024/11/07 19:59:38 by kofujita         ###   ########.fr        #
+#    Updated: 2024/12/13 22:24:22 by kofujita         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ RM    := rm -rf
 CP    := cp -r
 MKDIR := mkdir -p
 AR    := ar rc
+MAKE  := make
 
 # Source files
 SRCS := $(shell find libphilo -name "*.c" -type f | sort)
@@ -74,7 +75,8 @@ library:
 	$(AR) $(LIB_NAME) $(OBJS_NO_MAIN) $(LIBRARIES)
 
 $(NAME): $(OBJS) library
-	$(CC) $(CFLAGS) $(INCLUDE_DIR) -o $(NAME) $(LIB_NAME) $(OBJS_MAIN)
+	$(MAKE) -C ./include/ft_std
+	$(CC) $(CFLAGS) $(INCLUDE_DIR) -o $(NAME) $(OBJS_MAIN) $(LIB_NAME) ./include/ft_std/libftstd.a
 
 clean:
 	$(RM) $(OBJS_DIR)

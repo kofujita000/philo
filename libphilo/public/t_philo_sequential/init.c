@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 09:50:57 by kofujita          #+#    #+#             */
-/*   Updated: 2024/11/17 10:32:35 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/14 00:20:26 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,12 @@ t_philo_sequential	*t_philo_sequential_init(
 	cnt = 0;
 	while (cnt != members->size)
 	{
-		buf = process2_init_list(&members->data[cnt]);
+		buf = process2_init_list(&members->data[cnt++]);
 		if (!buf)
 			return (t_philo_sequential_free(ret), NULL);
 		process3_add_list_for_sequential(ret, buf);
 	}
-	t_philo_sequential_current_to_begin(ret);
+	t_philo_sequential_move_current_to_begin(ret);
 	return (ret);
 }
 
@@ -101,8 +101,7 @@ void	process3_add_list_for_sequential(
 	}
 	else
 	{
-		if (seq->before)
-			seq->before->next = lst;
+		seq->current->next = lst;
 		seq->before = seq->current;
 		seq->current = lst;
 	}

@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 10:40:46 by kofujita          #+#    #+#             */
-/*   Updated: 2024/11/17 10:55:17 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/14 01:05:32 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,23 @@
 void	t_philo_sequential_erase(
 			t_philo_sequential *const thiz)
 {
+	t_philo_list	*buf;
+
 	if (thiz->current == thiz->end)
 	{
 		thiz->end = thiz->before;
-		thiz->before->next = thiz->current->next;
+		buf = thiz->current->next;
+		if (thiz->before)
+			thiz->before->next = buf;
 		free(thiz->current);
-		thiz->current = thiz->before;
+		thiz->current = buf;
 	}
 	else
 	{
-		thiz->before->next = thiz->current->next;
+		buf = thiz->current->next;
+		if (thiz->before)
+			thiz->before->next = buf;
 		free(thiz->current);
-		thiz->current = thiz->before->next;
+		thiz->current = buf;
 	}
 }

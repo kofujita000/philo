@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 11:02:15 by kofujita          #+#    #+#             */
-/*   Updated: 2024/11/17 11:12:14 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/13 23:02:00 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ t_philo_info	*t_philo_info_init(
 		return (t_philo_info_free(ret), NULL);
 	if (pthread_mutex_init(&ret->mtx, 0))
 		return (t_philo_info_free(ret), NULL);
-	ret->members = t_philo_members_init(ret->parms.count, &ret->mtx);
+	ret->members = t_philo_members_init(ret->parms.count, &ret->mtx, \
+			&ret->parms);
 	if (!ret->members)
 		return (t_philo_info_free(ret), NULL);
 	ret->sequential = t_philo_sequential_init(ret->members);

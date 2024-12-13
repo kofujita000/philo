@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 18:27:53 by kofujita          #+#    #+#             */
-/*   Updated: 2024/11/07 23:21:10 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/13 22:17:13 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 t_philo_members	*t_philo_members_init(
 					const size_t size,
-					pthread_mutex_t *const master_mtx)
+					pthread_mutex_t *const master_mtx,
+					const t_philo_params *const param)
 {
 	t_philo_members	*ret;
 	size_t			pnt;
@@ -29,6 +30,6 @@ t_philo_members	*t_philo_members_init(
 		return (t_philo_members_free(ret), ret = NULL, ret);
 	pnt = size;
 	while (pnt--)
-		t_philo_member_init(&ret->data[pnt], pnt, master_mtx);
+		t_philo_member_init(&ret->data[pnt], pnt, master_mtx, param);
 	return (ret);
 }
