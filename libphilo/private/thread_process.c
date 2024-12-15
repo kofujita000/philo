@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 11:22:29 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/14 01:18:06 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/15 21:45:20 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,24 @@ void	*__philo_thread_process(
 
 	while (1)
 	{
-		__philo_print_thinking(member->my_number);
+		member->status = PHILO_STATUS_THINK;
+		__philo_print_thinking(member->start_time, member->my_number);
 		pthread_mutex_lock(&member->mtx);
 		if (member->status == PHILO_STATUS_DIE)
 			break;
+		member->status = PHILO_STATUS_EAT;
 		process1_use_fork(member);
 		pthread_mutex_unlock(member->master_mtx);
 		res = gettimeofday(&member->eat_time, &member->timezone);
 		if (res)
 			break;
-		__philo_print_taken_fork(member->my_number);
-		__philo_print_eating(member->my_number);
+		__philo_print_taken_fork(member->start_time, member->my_number);
+		__philo_print_eating(member->start_time, member->my_number);
 		usleep(member->params->eat);
 		if (member->status == PHILO_STATUS_DIE)
 			break;
 		process3_release_fork(member);
-		__philo_print_sleeping(member->my_number);
+		__philo_print_sleeping(member->start_time, member->my_number);
 		usleep(member->params->sleep);
 		if (member->status == PHILO_STATUS_DIE)
 			break;
@@ -70,8 +72,10 @@ void	*__philo_thread_process(
 void	process1_use_fork(
 					t_philo_member *const member)
 {
+	printf("member_my_number begin: %d\n", member->my_number);
 	member->fork = PHILO_FORK_FALSE;
 	member->member->fork = PHILO_FORK_FALSE;
+	printf("member_my_number end: %d\n", member->my_number);
 }
 
 void	process2_die(

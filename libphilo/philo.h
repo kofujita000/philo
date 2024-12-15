@@ -6,7 +6,7 @@
 /*   By: moco <kofujita@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 13:52:20 by moco              #+#    #+#             */
-/*   Updated: 2024/12/14 01:15:24 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/15 20:44:10 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@
  * 13. PHILO_ERROR_GET_TIME                  -> 現在時刻の取得に失敗
  * 14. PHILO_NONE_SIDE                       -> 隣がいない場合
  * 15. PHILO_ERROR_START_DIE_OVSERVER        -> 死亡監視の立ち上げに失敗
+ * 16. PHILO_PASS                            -> 処理を通すためのもの
  *
  *****************************************************************************/
 typedef enum s_philo_code
@@ -66,6 +67,7 @@ typedef enum s_philo_code
 	PHILO_ERROR_GET_TIME,
 	PHILO_NONE_SIDE,
 	PHILO_ERROR_START_DIE_OVSERVER,
+	PHILO_PASS,
 
 }	t_philo_code;
 
@@ -167,6 +169,7 @@ t_philo_code			t_philo_params_init(
  * 9. t_philo_lock           lock        -> 情報をロックしているかしていないか
  * 10. pthread_mutex_t        *master_mtx -> マスタのミューテックスアドレス
  * 11. const t_philo_params  *params     -> パラメータ情報のアドレス
+ * 12. long                  start_time  -> 実行開始時間
  *
  *****************************************************************************/
 typedef struct s_philo_member
@@ -182,6 +185,7 @@ typedef struct s_philo_member
 	t_philo_lock			lock;
 	pthread_mutex_t			*master_mtx;
 	const t_philo_params	*params;
+	long					start_time;
 
 }	t_philo_member;
 
@@ -190,6 +194,7 @@ typedef struct s_philo_member
  *
  * 1. t_philo_member *const -> 情報を代入するための構造体
  * 2. const int32_t         -> 哲学者の個人番号
+ * 3. void *const           -> t_philo_info のポインタ
  *
  * r. t_philo_code -> [PHILO_SUCCESS => 処理成功]
  *                    [...]
@@ -197,8 +202,7 @@ typedef struct s_philo_member
 t_philo_code			t_philo_member_init(
 							t_philo_member *const thiz,
 							const int32_t my_number,
-							pthread_mutex_t *const master_mtx,
-							const t_philo_params *const params);
+							void *const info);
 
 /**
  * 哲学の解放するための関数 (メモリを解放するわけではない)
@@ -225,15 +229,15 @@ typedef struct s_philo_members
 /**
  * 哲学者全体の構造体の初期化を行うための関数
  *
- * 1. const size_t -> メンバの数
+ * 1. const size_t      -> メンバの数
+ * 2. const void *const -> 情報を保持する構造体のアドレス
  *
  * r. t_philo_members -> [!NULL => 初期化成功]
  *                       [NULL  => 初期化失敗]
  */
 t_philo_members			*t_philo_members_init(
 							const size_t size,
-							pthread_mutex_t *const master_mtx,
-							const t_philo_params *const params);
+							void *const info);
 
 /**
  * 哲学者全体の構造体の解放を行うための関数
@@ -361,6 +365,7 @@ int						t_philo_sequential_is_end(
  * 5. 共有ロック制御のためのフラグ
  * 6. 死者の観測を行うためのスレッド (死者にクチナシ)
  * 7. 死者観測を制御するフラグ (1 => 稼働 / 0 => 終了)
+ * 8. 開始時のタイムスタンプ
  *
  *****************************************************************************/
 typedef struct s_philo_info
@@ -371,6 +376,7 @@ typedef struct s_philo_info
 	pthread_mutex_t		mtx;
 	pthread_t			die_ovserver_ptid;
 	int					die_ovserver_flag;
+	long				start_time;
 
 }	t_philo_info;
 
@@ -452,48 +458,58 @@ void					__philo_die_process(
  *
  * 1. t_philo_info *const 
  */
-void					__philo_think_process(
+t_philo_code			__philo_think_process(
 							t_philo_info *const info,
 							t_philo_member *const member);
 
 /**
  * 哲学者がフォークを取った時間を出力するための関数
  *
- * 1. const int32_t -> 哲学者番号
+ * 1. const int32_t -> 実行開始タイムスタンプ
+ * 2. const int32_t -> 哲学者番号
  */
 void					__philo_print_taken_fork(
+							const long start_time,
 							const int32_t my_number);
 
 /**
  * 哲学者が食べ始めた時間を出力するための関数
  *
- * 1. const int32_t -> 哲学者番号
+ * 1. const int32_t -> 実行開始タイムスタンプ
+ * 2. const int32_t -> 哲学者番号
  */
 void					__philo_print_eating(
+							const long start_time,
 							const int32_t my_number);
 
 /**
  * 哲学者が眠り始めた時間を出力するための関数
  *
- * 1. const int32_t -> 哲学者番号
+ * 1. const int32_t -> 実行開始タイムスタンプ
+ * 2. const int32_t -> 哲学者番号
  */
 void					__philo_print_sleeping(
+							const long start_time,
 							const int32_t my_number);
 
 /**
  * 哲学者が考え始めた時間を出力するための関数
  *
- * 1. const int32_t -> 哲学者番号
+ * 1. const int32_t -> 実行開始タイムスタンプ
+ * 2. const int32_t -> 哲学者番号
  */
 void					__philo_print_thinking(
+							const long start_time,
 							const int32_t my_number);
 
 /**
  * 哲学者がお亡くなりになった時間を出力するための関数
  *
- * 1. const int32_t -> 哲学者番号
+ * 1. const int32_t -> 実行開始タイムスタンプ
+ * 2. const int32_t -> 哲学者番号
  */
 void					__philo_print_died(
+							const long start_time,
 							const int32_t my_number);
 
 #endif // PHILO_H

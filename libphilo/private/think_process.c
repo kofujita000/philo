@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 19:28:43 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/14 00:41:51 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/15 21:11:44 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,25 +44,28 @@ static t_philo_code	process2_select_fork_left_or_right(
 						t_philo_member *const left,
 						t_philo_member *const right);
 
-void	__philo_think_process(
-			t_philo_info *const info,
-			t_philo_member *const member)
+t_philo_code	__philo_think_process(
+					t_philo_info *const info,
+					t_philo_member *const member)
 {
 	t_philo_code	res;
 	t_philo_member	*left;
 	t_philo_member	*right;
 
+	if (member->fork == PHILO_FORK_FALSE)
+		return (PHILO_NONE_SIDE);
 	res = process1_set_left_and_right(info, member, &left, &right);
 	if (res == PHILO_NONE_SIDE)
-		return ;
+		return (res);
 	res = process2_select_fork_left_or_right(member, left, right);
 	if (res == PHILO_USED_FORK)
-		return ;
+		return (res);
 	pthread_mutex_lock(&info->mtx);
 	pthread_mutex_unlock(&member->mtx);
 	pthread_mutex_lock(&info->mtx);
 	t_philo_sequential_move_end(info->sequential);
 	pthread_mutex_unlock(&info->mtx);
+	return (PHILO_SUCCESS);
 }
 
 t_philo_code	process1_set_left_and_right(
@@ -105,5 +108,8 @@ t_philo_code	process2_select_fork_left_or_right(
 		member->member = left;
 	if (right->fork == PHILO_FORK_TRUE)
 		member->member = right;
+	if (member->member->eat_time.tv_sec <= member->eat_time.tv_sec &&
+		member->member->eat_time.tv_usec / 1000 < member->eat_time.tv_usec / 1000)
+		return (PHILO_USED_FORK);
 	return (PHILO_SUCCESS);
 }

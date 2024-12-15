@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 20:46:43 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/14 00:07:20 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/15 19:33:32 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,16 @@
 static void	process1_init_value(
 				t_philo_member *const thiz,
 				const int32_t my_number,
-				pthread_mutex_t *const master_mtx,
-				const t_philo_params *const params);
+				t_philo_info *const info);
 
 t_philo_code	t_philo_member_init(
 					t_philo_member *const thiz,
 					const int32_t my_number,
-					pthread_mutex_t *const master_mtx,
-					const t_philo_params *const params)
+					void *const info)
 {
 	int	res;
 
-	process1_init_value(thiz, my_number, master_mtx, params);
+	process1_init_value(thiz, my_number, info);
 	res = pthread_mutex_init(&thiz->mtx, 0);
 	if (res)
 		return (PHILO_ERROR_MEMBER_MUTEX_INIT);
@@ -46,8 +44,7 @@ t_philo_code	t_philo_member_init(
 void	process1_init_value(
 			t_philo_member *const thiz,
 			const int32_t my_number,
-			pthread_mutex_t *const master_mtx,
-			const t_philo_params *const params)
+			t_philo_info *const info)
 {
 	thiz->my_number = my_number;
 	thiz->status = PHILO_STATUS_THINK;
@@ -55,6 +52,7 @@ void	process1_init_value(
 	thiz->member = NULL;
 	thiz->ptid = 0;
 	thiz->lock = PHILO_LOCK_FALSE;
-	thiz->master_mtx = master_mtx;
-	thiz->params = params;
+	thiz->master_mtx = &info->mtx;
+	thiz->params = &info->parms;
+	thiz->start_time = info->start_time;
 }

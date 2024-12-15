@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 20:13:42 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/14 00:33:22 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/15 17:52:20 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,6 @@ t_philo_code	t_philo_params_init(
 int	process1_times_1000(
 		t_philo_params *const thiz)
 {
-	if ((long long)((long long)thiz->die * 1000) > INT_MAX)
-		return (PHILO_ERROR_PARAM_PHILO_DIE);
-	thiz->die *= 1000;
 	if ((long long)((long long)thiz->eat * 1000) > INT_MAX)
 		return (PHILO_ERROR_PARAM_PHILO_EAT);
 	thiz->eat *= 1000;

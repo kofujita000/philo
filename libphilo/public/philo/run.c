@@ -6,14 +6,14 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 11:23:37 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/14 01:21:58 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/15 17:51:11 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-t_philo_code			philo_run(
-							t_philo_info *const info)
+t_philo_code	philo_run(
+					t_philo_info *const info)
 {
 	t_philo_code	ret;
 

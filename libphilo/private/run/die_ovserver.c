@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 21:42:07 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/14 01:20:41 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/15 19:21:36 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	process2_check_die(
 		if (buf + info->parms.die < ms)
 		{
 			members[cnt].status = PHILO_STATUS_DIE;
-			__philo_print_died(members[cnt].my_number);
+			__philo_print_died(info->start_time, members[cnt].my_number);
 		}
 	}
 }

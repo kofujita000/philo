@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 10:36:26 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/13 23:49:17 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/15 21:52:24 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@ void	t_philo_sequential_move_end(
 		thiz->before->next = thiz->current->next;
 	else
 		thiz->begin = thiz->begin->next;
+	thiz->end->next = NULL;
 	t_philo_sequential_move_current_to_begin(thiz);
 }
