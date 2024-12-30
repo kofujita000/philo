@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 19:25:54 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/15 20:03:09 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/31 03:39:34 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@ void	__philo_print_taken_fork(
 
 	gettimeofday(&tv, NULL);
 	timestamp = tv.tv_sec * 1000 + tv.tv_usec / 1000 - start_time;
+	printf(PHILO_MSG_TAKEN_FORK, timestamp, my_number);
 	printf(PHILO_MSG_TAKEN_FORK, timestamp, my_number);
 }

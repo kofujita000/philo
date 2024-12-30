@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 11:22:29 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/31 03:34:42 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/31 04:07:19 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	*__philo_thread_process(
 		if (*member->exit_flag == PHILO_LOCK_TRUE || member->status == PHILO_STATUS_DIE)
 			break;
 		process3_release_fork(member);
+		member->status = PHILO_STATUS_SLEEP;
 		__philo_print_sleeping(member->start_time, member->my_number);
 		usleep(member->params->sleep);
 	}
