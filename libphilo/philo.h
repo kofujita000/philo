@@ -6,7 +6,7 @@
 /*   By: moco <kofujita@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 13:52:20 by moco              #+#    #+#             */
-/*   Updated: 2024/12/15 20:44:10 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/31 02:19:46 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,8 +166,8 @@ t_philo_code			t_philo_params_init(
  * 6. pthread_t              ptid        -> スレッドID
  * 7. pthread_mutex_t        mtx         -> ミューテックス
  * 8. t_philo_params         *member     -> フォークを貸してもらうメンバ情報
- * 9. t_philo_lock           lock        -> 情報をロックしているかしていないか
- * 10. pthread_mutex_t        *master_mtx -> マスタのミューテックスアドレス
+ * 9. const t_philo_lock     *exit_flag   -> 死亡処理が実行されたかどうか
+ * 10. pthread_mutex_t       *master_mtx -> マスタのミューテックスアドレス
  * 11. const t_philo_params  *params     -> パラメータ情報のアドレス
  * 12. long                  start_time  -> 実行開始時間
  *
@@ -182,7 +182,7 @@ typedef struct s_philo_member
 	pthread_t				ptid;
 	pthread_mutex_t			mtx;
 	struct s_philo_member	*member;
-	t_philo_lock			lock;
+	const t_philo_lock		*exit_flag;
 	pthread_mutex_t			*master_mtx;
 	const t_philo_params	*params;
 	long					start_time;
@@ -377,6 +377,7 @@ typedef struct s_philo_info
 	pthread_t			die_ovserver_ptid;
 	int					die_ovserver_flag;
 	long				start_time;
+	t_philo_lock		exit_flag;
 
 }	t_philo_info;
 

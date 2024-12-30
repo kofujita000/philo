@@ -6,11 +6,19 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 11:02:15 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/15 20:13:19 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/31 02:17:41 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+/**
+ * 値の初期化を行うための関数
+ *
+ * 1. t_philo_info *const -> 値を代入する先のアドレス
+ */
+static void	process1_init_value(
+				t_philo_info *const info);
 
 t_philo_info	*t_philo_info_init(
 					const int argc,
@@ -23,8 +31,7 @@ t_philo_info	*t_philo_info_init(
 	ret = (t_philo_info *)malloc(sizeof(t_philo_info));
 	if (!ret)
 		return (ret);
-	ret->members = NULL;
-	ret->sequential = NULL;
+	process1_init_value(ret);
 	res = gettimeofday(&tv, NULL);
 	if (res)
 		return (t_philo_info_free(ret), NULL);
@@ -41,4 +48,12 @@ t_philo_info	*t_philo_info_init(
 	if (!ret->sequential)
 		return (t_philo_info_free(ret), NULL);
 	return (ret);
+}
+
+static void	process1_init_value(
+				t_philo_info *const info)
+{
+	info->members = NULL;
+	info->sequential = NULL;
+	info->exit_flag = PHILO_LOCK_FALSE;
 }

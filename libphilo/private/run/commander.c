@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 17:34:12 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/15 21:36:05 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/31 02:57:27 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_philo_code	__philo_run_commander(
 	t_philo_code		res;
 	const t_philo_list	*current_list;
 
-	while (1)
+	while (info->exit_flag == PHILO_LOCK_FALSE)
 	{
 		usleep(10);
 		current_list = t_philo_sequential_current(info->sequential);
@@ -38,7 +38,6 @@ t_philo_code	__philo_run_commander(
 			if (!t_philo_sequential_next(info->sequential))
 			{
 				t_philo_sequential_move_current_to_begin(info->sequential);
-				printf("\n\n====================\n");
 			}
 		}
 	}

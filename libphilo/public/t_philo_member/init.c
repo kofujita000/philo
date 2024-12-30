@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 20:46:43 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/15 19:33:32 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/31 02:19:08 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	process1_init_value(
 	thiz->fork = PHILO_FORK_TRUE;
 	thiz->member = NULL;
 	thiz->ptid = 0;
-	thiz->lock = PHILO_LOCK_FALSE;
+	thiz->exit_flag = &info->exit_flag;
 	thiz->master_mtx = &info->mtx;
 	thiz->params = &info->parms;
 	thiz->start_time = info->start_time;

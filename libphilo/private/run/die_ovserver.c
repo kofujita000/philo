@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 21:42:07 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/15 19:21:36 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/31 02:53:53 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ void	*process1_ovserver(
 	struct timeval	tv;
 	long			ts;
 
-	while (info->die_ovserver_flag)
+	while (info->die_ovserver_flag && info->exit_flag == PHILO_LOCK_FALSE)
 	{
 		gettimeofday(&tv, NULL);
-		ts = tv.tv_sec * 1000 + (tv.tv_usec / 1000);
+		ts = tv.tv_sec * 1000 + (tv.tv_usec / 1000 % 1000);
 		process2_check_die(info, ts, info->members->data);
 	}
 	return NULL;
@@ -73,11 +73,13 @@ void	process2_check_die(
 		if (members[cnt].status == PHILO_STATUS_DIE)
 			continue ;
 		buf = members[cnt].eat_time.tv_sec * 1000 + \
-			(members[cnt].eat_time.tv_usec / 1000);
+			(members[cnt].eat_time.tv_usec / 1000 % 1000);
 		if (buf + info->parms.die < ms)
 		{
+			info->exit_flag = PHILO_LOCK_TRUE;
 			members[cnt].status = PHILO_STATUS_DIE;
 			__philo_print_died(info->start_time, members[cnt].my_number);
+			break;
 		}
 	}
 }
