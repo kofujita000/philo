@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 19:28:43 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/31 04:14:03 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/31 04:40:15 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,9 @@ t_philo_code	process2_select_fork_left_or_right(
 	if (right->fork == PHILO_FORK_TRUE)
 		member->member = right;
 	if (member->member->eat_time.tv_sec < member->eat_time.tv_sec || \
-		(member->member->eat_time.tv_sec == member->eat_time.tv_sec &&
-		member->member->eat_time.tv_usec / 1000 < member->eat_time.tv_usec / 1000))
+		(member->member->eat_time.tv_sec == member->eat_time.tv_sec && \
+		member->member->eat_time.tv_usec / 1000 < \
+		member->eat_time.tv_usec / 1000))
 		return (PHILO_USED_FORK);
 	return (PHILO_SUCCESS);
 }

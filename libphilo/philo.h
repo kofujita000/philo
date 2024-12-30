@@ -6,7 +6,7 @@
 /*   By: moco <kofujita@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 13:52:20 by moco              #+#    #+#             */
-/*   Updated: 2024/12/31 02:19:46 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/31 04:55:42 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ typedef enum s_philo_code
 	PHILO_NONE_SIDE,
 	PHILO_ERROR_START_DIE_OVSERVER,
 	PHILO_PASS,
-
 }	t_philo_code;
 
 /******************************************************************************
@@ -86,7 +85,6 @@ typedef enum s_philo_status
 	PHILO_STATUS_SLEEP,
 	PHILO_STATUS_THINK,
 	PHILO_STATUS_DIE,
-
 }	t_philo_status;
 
 /******************************************************************************
@@ -100,7 +98,6 @@ typedef enum s_philo_fork
 {
 	PHILO_FORK_TRUE,
 	PHILO_FORK_FALSE
-
 }	t_philo_fork;
 
 /******************************************************************************
@@ -114,7 +111,6 @@ typedef enum s_philo_lock
 {
 	PHILO_LOCK_TRUE,
 	PHILO_LOCK_FALSE,
-
 }	t_philo_lock;
 
 /******************************************************************************
@@ -418,6 +414,34 @@ t_philo_code			philo_run(
  * 1. t_philo_member *const -> スレッドに渡したい情報を保持する構造体
  */
 void					*__philo_thread_process(
+							t_philo_member *const member);
+
+/**
+ * スレッドが実行する関数 (eating)
+ *
+ * 1. t_philo_member *const -> スレッドに渡したい情報を保持する構造体
+ *
+ * r. int [0 => 次の処理へ] / [1 => break]
+ */
+int						__philo_thread_process_eating(
+							t_philo_member *const member);
+
+/**
+ * スレッドが実行する関数 (sleeping)
+ *
+ * 1. t_philo_member *const -> スレッドに渡したい情報を保持する構造体
+ */
+void					__philo_thread_process_sleeping(
+							t_philo_member *const member);
+
+/**
+ * スレッドが実行する関数 (thinking)
+ *
+ * 1. t_philo_member *const -> スレッドに渡したい情報を保持する構造体
+ *
+ * r. int [0 => 次の処理へ] / [1 => break]
+ */
+int						__philo_thread_process_thinking(
 							t_philo_member *const member);
 
 /**

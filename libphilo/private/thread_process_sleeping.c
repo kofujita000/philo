@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_end.c                                           :+:      :+:    :+:   */
+/*   thread_process_sleeping.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/17 10:59:26 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/31 04:37:07 by kofujita         ###   ########.fr       */
+/*   Created: 2024/12/31 04:54:04 by kofujita          #+#    #+#             */
+/*   Updated: 2024/12/31 04:55:30 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	t_philo_sequential_is_end(
-		t_philo_sequential *const thiz)
+void	__philo_thread_process_sleeping(
+			t_philo_member *const member)
 {
-	return (thiz->current == thiz->end);
+	member->status = PHILO_STATUS_SLEEP;
+	__philo_print_sleeping(member->start_time, member->my_number);
+	usleep(member->params->sleep);
 }
