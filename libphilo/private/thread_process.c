@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 11:22:29 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/31 02:37:32 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/31 03:34:42 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	*__philo_thread_process(
 {
 	int				res;
 
-	while (*member->exit_flag == PHILO_LOCK_FALSE || member->status != PHILO_STATUS_DIE)
+	while (*member->exit_flag == PHILO_LOCK_FALSE && member->status != PHILO_STATUS_DIE)
 	{
 		member->status = PHILO_STATUS_THINK;
 		__philo_print_thinking(member->start_time, member->my_number);
