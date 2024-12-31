@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 18:27:53 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/15 19:56:29 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/31 21:34:08 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ t_philo_members	*t_philo_members_init(
 		return (t_philo_members_free(ret), ret = NULL, ret);
 	pnt = size;
 	while (pnt--)
-		t_philo_member_init(&ret->data[pnt], pnt, info);
+		t_philo_member_init(&ret->data[pnt], pnt, info, ret);
 	return (ret);
 }

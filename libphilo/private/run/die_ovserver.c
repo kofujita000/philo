@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/08 21:42:07 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/31 04:40:39 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/31 21:52:23 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	process2_check_die(
 		{
 			info->exit_flag = PHILO_LOCK_TRUE;
 			members[cnt].status = PHILO_STATUS_DIE;
+			usleep(2000);
 			__philo_print_died(info->start_time, members[cnt].my_number);
 			break ;
 		}

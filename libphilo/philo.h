@@ -6,7 +6,7 @@
 /*   By: moco <kofujita@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 13:52:20 by moco              #+#    #+#             */
-/*   Updated: 2024/12/31 04:55:42 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/31 21:34:38 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,19 +153,21 @@ t_philo_code			t_philo_params_init(
 /******************************************************************************
  * 
  * 哲学者個人の状態
- * 1. int32_t                my_number   -> 哲学者の個人番号
- * 2. struct timeval         wait_time   -> 食事開始時間
- * 3. struct timezone        timezone    -> タイムゾーン
- * 4. t_philo_status         status      -> ステータス
- * 5. t_philo_fork           fork_status -> フォークを持っているかどうか
+ * 1. int32_t                 my_number   -> 哲学者の個人番号
+ * 2. struct timeval          wait_time   -> 食事開始時間
+ * 3. struct timezone         timezone    -> タイムゾーン
+ * 4. t_philo_status          status      -> ステータス
+ * 5. t_philo_fork            fork_status -> フォークを持っているかどうか
  *  => (0 => フォークなし / 1 => フォークあり)
- * 6. pthread_t              ptid        -> スレッドID
- * 7. pthread_mutex_t        mtx         -> ミューテックス
- * 8. t_philo_params         *member     -> フォークを貸してもらうメンバ情報
- * 9. const t_philo_lock     *exit_flag   -> 死亡処理が実行されたかどうか
- * 10. pthread_mutex_t       *master_mtx -> マスタのミューテックスアドレス
- * 11. const t_philo_params  *params     -> パラメータ情報のアドレス
- * 12. long                  start_time  -> 実行開始時間
+ * 6. pthread_t               ptid        -> スレッドID
+ * 7. pthread_mutex_t         mtx         -> ミューテックス
+ * 8. t_philo_params          *member     -> フォークを貸してもらうメンバ情報
+ * 9. const t_philo_lock      *exit_flag  -> 死亡処理が実行されたかどうか
+ * 10. pthread_mutex_t        *master_mtx -> マスタのミューテックスアドレス
+ * 11. const t_philo_params   *params     -> パラメータ情報のアドレス
+ * 12. long                   start_time  -> 実行開始時間
+ * 13. int32_t                eat_count   -> 食事回数
+ * 14. struct s_philo_members members     -> メンバ情報
  *
  *****************************************************************************/
 typedef struct s_philo_member
@@ -178,10 +180,12 @@ typedef struct s_philo_member
 	pthread_t				ptid;
 	pthread_mutex_t			mtx;
 	struct s_philo_member	*member;
-	const t_philo_lock		*exit_flag;
+	t_philo_lock			*exit_flag;
 	pthread_mutex_t			*master_mtx;
 	const t_philo_params	*params;
 	long					start_time;
+	int32_t					eat_count;
+	struct s_philo_members	*members;
 
 }	t_philo_member;
 
@@ -198,7 +202,8 @@ typedef struct s_philo_member
 t_philo_code			t_philo_member_init(
 							t_philo_member *const thiz,
 							const int32_t my_number,
-							void *const info);
+							void *const info,
+							struct s_philo_members *members);
 
 /**
  * 哲学の解放するための関数 (メモリを解放するわけではない)
@@ -425,6 +430,16 @@ void					*__philo_thread_process(
  */
 int						__philo_thread_process_eating(
 							t_philo_member *const member);
+
+/**
+ * スレッドが実行する関数 (メンバ全体の最低食事回数を求める)
+ *
+ * 1. const t_philo_members *const -> メンバアドレス
+ *
+ * r. size_t -> [最低食事回数]
+ */
+int32_t					__philo_thread_process_get_min_eat_count(
+							const t_philo_members *const members);
 
 /**
  * スレッドが実行する関数 (sleeping)

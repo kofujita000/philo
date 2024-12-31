@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 20:13:42 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/15 17:52:20 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/31 21:37:33 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ t_philo_code	t_philo_params_init(
 		if (res || thiz->must_eat_count < 0)
 			return (PHILO_ERROR_PARAM_PHILO_MUST_EAT_COUNT);
 	}
+	else
+		thiz->must_eat_count = -1;
 	return (process1_times_1000(thiz));
 }
 

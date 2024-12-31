@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/31 04:48:35 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/31 04:57:51 by kofujita         ###   ########.fr       */
+/*   Updated: 2024/12/31 21:36:38 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,14 @@ int	__philo_thread_process_eating(
 		return (1);
 	__philo_print_taken_fork(member->start_time, member->my_number);
 	__philo_print_eating(member->start_time, member->my_number);
+	member->eat_count++;
+	if (member->params->must_eat_count != -1 && \
+		__philo_thread_process_get_min_eat_count(member->members) >= \
+		member->params->must_eat_count)
+	{
+		*member->exit_flag = PHILO_LOCK_TRUE;
+		return (1);
+	}
 	usleep(member->params->eat);
 	if (*member->exit_flag == PHILO_LOCK_TRUE || \
 		member->status == PHILO_STATUS_DIE)
