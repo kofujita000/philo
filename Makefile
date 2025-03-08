@@ -6,7 +6,7 @@
 #    By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/07 18:28:46 by kofujita          #+#    #+#              #
-#    Updated: 2024/12/13 22:24:22 by kofujita         ###   ########.fr        #
+#    Updated: 2025/03/08 15:10:39 by kofujita         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ LIB_NAME := lib$(NAME).a
 CFLAGS := -Werror -Wall -Wextra
 
 # Debug flag
-CFLAGS += -ggdb -fsanitize=leak
+CFLAGS += -ggdb # -fsanitize=thread
 
 # Include directory
 INCLUDE_DIR := -I./libphilo \
@@ -46,28 +46,11 @@ OBJS_NO_MAIN := $(SRCS:%.c=$(OBJS_DIR)/%.o)
 OBJS_MAIN    := $(MAIN:%.c=$(OBJS_DIR)/%.o)
 OBJS         := $(OBJS_NO_MAIN) $(OBJS_MAIN)
 
-SRCS_COUNT   := $(words $(SRCS) $(MAIN))
-PROGRESS     := 0
-BAR_LENGTH   := $(shell echo $$(($$COLUMNS / 3)))
-
 .PHONY:
 	all clean fclean re library
 
 $(OBJS_DIR)/%.o: %.c
 	@$(CC) $(CFLAGS) $(INCLUDE_DIR) -c $< -o $@
-	@$(eval PROGRESS=$(shell echo $$(($(PROGRESS) + 1))))
-	@PERCENTAGE=$$(($(PROGRESS) * 100 / $(SRCS_COUNT))) ; \
-	BAR=$$(($(BAR_LENGTH) * $$PERCENTAGE / 100)) ; \
-	SPACES=$$(($(BAR_LENGTH) - $$BAR)) ; \
-	printf "\r\033[K" ; \
-	printf "Progress: [" ; \
-	for i in $$(seq 1 $$BAR); do printf "="; done ; \
-	printf ">" ; \
-	for i in $$(seq 1 $$SPACES); do printf " "; done ; \
-	printf "] $$PERCENTAGE%% ($@)"
-	@if [ $(PROGRESS) -eq $(SRCS_COUNT) ]; then \
-		echo ""; \
-	fi
 
 all: $(NAME)
 

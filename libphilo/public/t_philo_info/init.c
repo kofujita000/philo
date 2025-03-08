@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 11:02:15 by kofujita          #+#    #+#             */
-/*   Updated: 2024/12/31 02:17:41 by kofujita         ###   ########.fr       */
+/*   Updated: 2025/03/08 15:27:21 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,6 @@ static void	process1_init_value(
 	info->members = NULL;
 	info->sequential = NULL;
 	info->exit_flag = PHILO_LOCK_FALSE;
+	info->die_ovserver_ptid = 0;
+	ft_std_memset(&info->mtx, 0x00, sizeof(pthread_mutex_t));
 }
