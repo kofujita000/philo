@@ -6,7 +6,7 @@
 /*   By: kofujita <kofujita@student42.tokyo>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/17 10:26:39 by kofujita          #+#    #+#             */
-/*   Updated: 2024/11/17 10:29:19 by kofujita         ###   ########.fr       */
+/*   Updated: 2025/03/10 21:40:43 by kofujita         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,15 @@ void	t_philo_sequential_free(
 
 	if (!thiz)
 		return ;
-	buf = thiz->begin;
-	while (buf)
+	if (thiz->end)
 	{
-		next = buf->next;
-		free(buf);
-		buf = next;
+		buf = thiz->begin;
+		while (buf)
+		{
+			next = buf->next;
+			free(buf);
+			buf = next;
+		}
 	}
 	free(thiz);
 }
